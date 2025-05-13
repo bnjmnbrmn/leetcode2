@@ -2,7 +2,6 @@ package com.bnjmnbrmn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Subsets78 {
 
@@ -201,24 +200,48 @@ public class Subsets78 {
 //    }
 
 
-    int[] nums;
+//    int[] nums;
+//    public List<List<Integer>> subsets(int[] nums) {
+//        this.nums = nums;
+//        return suffixesSubsetsPlus(List.of(), 0);
+//    }
+//
+//    private List<List<Integer>> suffixesSubsetsPlus(List<Integer> toInclude, int suffixStart) {
+//
+//        return prepend(toInclude, IntStream.range(suffixStart, nums.length).boxed().flatMap(i ->
+//                suffixesSubsetsPlus(append(toInclude, nums[i]), i + 1).stream())
+//                .toList());
+//    }
+//
+//    private <T> List<T> prepend(T t, List<T> list) {
+//        List<T> toRet = new ArrayList<>();
+//        toRet.add(t);
+//        toRet.addAll(list);
+//        return toRet;
+//    }
+//
+//    private <T> List<T> append(List<T> list, T t) {
+//        List<T> toRet = new ArrayList<>(list);
+//        toRet.add(t);
+//        return toRet;
+//    }
+
+
+
+    private List<List<Integer>> output = new ArrayList<>();
+    private int[] nums;
+
     public List<List<Integer>> subsets(int[] nums) {
         this.nums = nums;
-        return suffixesSubsetsPlus(List.of(), 0);
+        addCombosToOutput(0, new ArrayList<>());
+        return output;
     }
 
-    private List<List<Integer>> suffixesSubsetsPlus(List<Integer> toInclude, int suffixStart) {
-
-        return prepend(toInclude, IntStream.range(suffixStart, nums.length).boxed().flatMap(i ->
-                suffixesSubsetsPlus(append(toInclude, nums[i]), i + 1).stream())
-                .toList());
-    }
-
-    private <T> List<T> prepend(T t, List<T> list) {
-        List<T> toRet = new ArrayList<>();
-        toRet.add(t);
-        toRet.addAll(list);
-        return toRet;
+    private void addCombosToOutput(int index, List<Integer> vals) {
+        output.add(new ArrayList<>(vals));
+        for (int i = index; i < nums.length; ++i) {
+            addCombosToOutput(i + 1, append(vals, nums[i]));
+        }
     }
 
     private <T> List<T> append(List<T> list, T t) {
